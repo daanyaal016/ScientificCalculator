@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Convenient Scientific Calculator</title>
+</head>
+<body>
+	<div style="text-align: center;">
+		<h1 style="font-family: Arial, sans-serif; color: blue; font-size: 28px; margin-bottom: -15px;">Online Scientific Calculator</h1>
+		          <p style="font-size: 24px; color: blue; margin-bottom: -25px;">Designed for easy and efficient calculations. Happy calculating!</p>
+
+
+
+
+	
+	<div class="calculator">
+		<div class="display">
+			<input type="text" id="result">
+		</div>
+		<div class="buttons">
+			<button onclick="insert('sin(')">sin</button>
+			<button onclick="insert('cos(')">cos</button>
+			<button onclick="insert('tan(')">tan</button>
+			<button onclick="insert('%')">%</button>
+			<button onclick="insert('log(')">log</button>
+			<button onclick="insert('e')">e</button>
+			<button onclick="insert('pi')">π</button>
+			<button onclick="insert('sqrt(')">√</button>
+			<button onclick="insert('^')">x^y</button>
+			<button onclick="insert('(')">(</button>
+			<button onclick="insert(')')">)</button>
+			<button onclick="clearResult()">C</button>
+			<button onclick="insert('7')">7</button>
+			<button onclick="insert('8')">8</button>
+			<button onclick="insert('9')">9</button>
+            <button onclick="insert('/')">÷</button>
+			<button onclick="insert('4')">4</button>
+			<button onclick="insert('5')">5</button>
+			<button onclick="insert('6')">6</button>
+			<button onclick="insert('*')">×</button>
+			<button onclick="insert('1')">1</button>
+			 <button onclick="insert('2')">2</button>
+			<button onclick="insert('3')">3</button>
+			<button onclick="insert('-')">-</button>
+			<button onclick="insert('0')">0</button>
+			<button onclick="insert('.')">.</button>
+            <button onclick="calculate()">=</button>
+			<button onclick="insert('+')">+</button>
+            <button class="btn" data-value="backspace">&larr;</button>
+		</div>
+	</div>
+
+    <script>
+        // get the calculator's input field
+		const input = document.getElementById("result");
+
+        // function to append a number or operator to the input field
+		function insert(num) {
+            // Check the last character
+			const lastChar = input.value[input.value.length - 1];
+
+            // If number is pressed before e or pi, consider it multiplication
+			if (['e', 'pi'].includes(num) && '0123456789'.includes(lastChar)) {
+				input.value += '*';
+			}
+
+			if (num === 'e') {
+				input.value += 'Math.E';
+			} else if (num === 'pi') {
+				input.value += 'Math.PI';
+			} else {
+				input.value += num;
+			}
+		}
+
+        // function to clear the input field
+		function clearResult() {
+			input.value = "";
+		}
+
+        // function to backspace
+		function backspace() {
+			input.value = input.value.slice(0, -1);
+		}
+
+        // function to calculate the result of the input field
+		function calculate() {
+			let expression = input.value;
+
+            // replace trigonometric functions with Math trigonometric functions
+			expression = expression
+				.replace(/sin\(/g, "Math.sin(")
+				.replace(/cos\(/g, "Math.cos(")
+				.replace(/tan\(/g, "Math.tan(")
+				.replace(/log\(/g, "Math.log10(")
+				.replace(/sqrt\(/g, "Math.sqrt(")
+				.replace(/%/g, "/100")
+				.replace(/\^/g, "**");
+
+            // evaluate the expression and display the result
+			try {
+				const result = eval(expression);
+				input.value = result;
+			} catch (error) {
+				input.value = "Error";
+			}
+		}
+		document.getElementById("result").addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {  
+        calculate();
+        event.preventDefault(); 
+    }
+});
+
+
+    </script>
+
+	<style>
+        /* calculator container styling */
+		.calculator { 
+			width: 300px;
+			margin: 50px auto;
+			background-color: #A9A9A9;
+			border-radius: 10px;
+			box-shadow: 0 0 10px hsl(0, 0%, 80%);
+			padding: 20px;
+		}
+
+        /* calculator display */
+		.display {
+			margin-bottom: 20px;
+		}
+
+		input[type="text"] {
+			width: 100%;
+			height: 50px;
+			font-size: 24px;
+			border-radius: 5px;
+			padding: 10px;
+			box-sizing: border-box;
+		}
+
+       
+		.buttons {
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
+			grid-gap: 10px;
+		}
+
+        /* button styling */
+		button {
+			height: 50px;
+			font-size: 18px;
+			border-radius: 5px;
+			background-color: #00ffff;
+			box-shadow: 0 0 5px #ccc;
+			cursor: pointer;
+		}
+	</style>
+</body>
+</html>
